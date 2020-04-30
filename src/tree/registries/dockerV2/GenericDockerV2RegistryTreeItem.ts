@@ -39,7 +39,7 @@ export class GenericDockerV2RegistryTreeItem extends DockerV2RegistryTreeItemBas
                     // We got authentication context successfully--set scope and move on to requesting the items
                     this.authContext.scope = 'registry:catalog:*';
                 } else {
-                    throw error;
+                    // TODO throw error;
                 }
             }
         }

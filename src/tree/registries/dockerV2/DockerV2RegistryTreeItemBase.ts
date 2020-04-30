@@ -26,10 +26,10 @@ export abstract class DockerV2RegistryTreeItemBase extends RegistryTreeItemBase 
     public get baseImagePath(): string {
         const url = new URL(this.baseUrl);
 
-        // Return URL host + pathname, removing any trailing slash and forcing lower case
+        // Return URL host + pathname, removing any trailing slash, "v2/", and forcing lower case
         // e.g. https://myRegistryUrl.tld:1234/NameSpace/ becomes myregistryurl.tld:1234/namespace
         // e.g. https://myRegistryUrl.tld:1234/ becomes myregistryurl.tld:1234
-        return `${url.host}${url.pathname}`.replace(/\/$/i, '').toLowerCase();
+        return `${url.host}${url.pathname}`.replace(/\/$/i, '').replace(/v2\//i, '').toLowerCase();
     }
 
     public get host(): string {
