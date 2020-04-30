@@ -7,7 +7,7 @@ import * as request from "request-promise-native";
 import { URL } from "url";
 import { AzExtParentTreeItem, AzExtTreeItem, IActionContext } from "vscode-azureextensionui";
 import { PAGE_SIZE } from "../../../constants";
-import { getNextLinkFromHeaders, registryRequest } from "../../../utils/registryRequestUtils";
+import { getNextLinkFromHeaders, registryRequest, v2RegExp } from "../../../utils/registryRequestUtils";
 import { IAuthProvider, IOAuthContext } from "../auth/IAuthProvider";
 import { ICachedRegistryProvider } from "../ICachedRegistryProvider";
 import { IRegistryProviderTreeItem } from "../IRegistryProviderTreeItem";
@@ -26,10 +26,10 @@ export abstract class DockerV2RegistryTreeItemBase extends RegistryTreeItemBase 
     public get baseImagePath(): string {
         const url = new URL(this.baseUrl);
 
-        // Return URL host + pathname, removing any trailing slash, "v2/", and forcing lower case
+        // Return URL host + pathname, removing "v2/", any trailing slash, and forcing lower case
         // e.g. https://myRegistryUrl.tld:1234/NameSpace/ becomes myregistryurl.tld:1234/namespace
         // e.g. https://myRegistryUrl.tld:1234/ becomes myregistryurl.tld:1234
-        return `${url.host}${url.pathname}`.replace(/\/$/i, '').replace(/v2\//i, '').toLowerCase();
+        return `${url.host}${url.pathname}`.replace(v2RegExp, '').replace(/\/$/i, '').toLowerCase();
     }
 
     public get host(): string {

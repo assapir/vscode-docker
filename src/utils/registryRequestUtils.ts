@@ -8,7 +8,7 @@ import * as request from 'request-promise-native';
 import { URL } from "url";
 import { workspace } from "vscode";
 
-const v2Regex: RegExp = /v2\//i;
+export const v2RegExp: RegExp = /v2\//i;
 
 export function getNextLinkFromHeaders(response: Response): string | undefined {
     const linkHeader: string | undefined = response.headers && <string>response.headers.link;
@@ -40,9 +40,9 @@ export async function registryRequest<T>(node: IRegistryAuthTreeItem | IReposito
     const baseUrl = node.baseUrl || (<IRepositoryAuthTreeItem>node).parent.baseUrl;
     let fullUrl: string = url;
     if (!url.startsWith(baseUrl)) {
-        if (v2Regex.test(baseUrl) && v2Regex.test(url)) {
+        if (v2RegExp.test(baseUrl) && v2RegExp.test(url)) {
             // If base URL already has "v2/" in it, then it's not needed on url and should be removed
-            url = url.replace(v2Regex, '');
+            url = url.replace(v2RegExp, '');
         }
 
         let parsed = new URL(url, baseUrl);
